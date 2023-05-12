@@ -1,15 +1,20 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import axios from 'axios';
 import algoliasearch from 'algoliasearch';
 import PQueue from 'p-queue';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const lightspeedApiKey = process.env.LIGHTSPEED_API_KEY;
+const lightspeedApiSecret = process.env.LIGHTSPEED_API_SECRET;
+
+const algoliaAppId = process.env.ALGOLIA_APP_ID;
+const algoliaApiKey = process.env.ALGOLIA_API_KEY;
+
 const lightspeedApiUrl =
   'https://{lightspeedApiKey}:{lightspeedApiSecret}@{cluster_url}/{shop_language}/{resource}.json';
 
-const algoliaClient = algoliasearch(
-  'P415X2SN1Y',
-  '2e9441dc196581a301be03dbc18a1b3f',
-);
+const algoliaClient = algoliasearch(algoliaAppId, algoliaApiKey);
 const index = algoliaClient.initIndex('dev_frontstreet');
 
 export const getLightspeedData = async () => {
@@ -31,8 +36,8 @@ export const getLightspeedData = async () => {
 
   // Otherwise, make a request to the API and cache the result
   const url = lightspeedApiUrl
-    .replace('{lightspeedApiKey}', '80240b9a047b1b471e87b6d08b9c4395')
-    .replace('{lightspeedApiSecret}', 'b401bf714f97466682cbacc2ed070a08')
+    .replace('{lightspeedApiKey}', lightspeedApiKey)
+    .replace('{lightspeedApiSecret}', lightspeedApiSecret)
     .replace('{cluster_url}', 'api.webshopapp.com')
     .replace('{shop_language}', 'nl')
     .replace('{resource}', 'products');
